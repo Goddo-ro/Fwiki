@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">{{ form.title.data }}</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        Ключевые слова:
+        <strong>{{ form.keywords.data }}</strong>
+    </p><br>
+    <p>
+        {{ form.text.data }}
+    </p><br>
+    {% if current_user.is_authenticated and (current_user == article.user or current_user.level < 3) %}
+        <div align="right">
+            <a href="/articles/{{ article.id }}/edit" class="btn btn-warning">
+                Изменить
+            </a>
+            <a href="/articles/{{ article.id }}/delete" class="btn btn-danger">
+                Удалить
+            </a>
+        </div>
+    {% endif %}
+    {{message}}
+    <br><br>
+    {% if such_articles %}
+        <h5>Похожие статьи: </h5>
+        <div>
+            {% for article in such_articles %}
+                <div class="such_articles" style="margin: 15px;"> <a href="/articles/{{ article[0].id }}"> "{{ article[0].title }}" </a> </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h5>Похожих статей не найдено</h5>
+    {% endif %}
+</form>
+{% endblock %}

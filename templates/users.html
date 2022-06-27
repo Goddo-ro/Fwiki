@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div align="left">
+        <br><br>
+        {% for user in users %}
+            {% if user.level != 1 %}
+            <div>
+                <h3>ID: {{ user.id }}</h3>
+                <h3>Фамилия: {{ user.surname }}</h3>
+                <h3>Имя: {{ user.name }}</h3>
+                <h3>Email: {{ user.email }}</h3>
+                <h3>Уровень доступа: {{ user.level }}</h3>
+                <h3>Аватар: <img src="static/img/users/{{ user.image }}" width="25px" height="25px"></h3>
+                <h3>Дата регистрации: {{ user.registrated_date }}</h3>
+                <h3>Дата обновления: {{ user.modified_date }}</h3>
+                {% if current_user.is_authenticated %}
+                    {% if current_user.level == 1 %}
+                        <a href="users/{{ user.id }}/change_level" class="btn btn-warning">Изменить уровень доступа</a>
+                        <a href="users/{{ user.id }}/delete" class="btn btn-danger">Удалить пользователя</a>
+                    {% endif %}
+                {% endif %}
+            </div> <br><br>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

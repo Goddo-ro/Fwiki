@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+        {% if current_user.is_authenticated %}
+            {% if current_user.level == 1 %}
+                <a href="users" class="btn btn-secondary">Просмотр Пользователей</a>
+            {% endif %}
+            <a href="articles" class="btn btn-secondary">Добавить статью</a><br><br><br><br>
+
+            <form method="post" class="articles" style="width: 50%;">
+                <p>
+                    {{ form.select.label }}<br>
+                    {{ form.select(class="form-control") }}<br>
+                    {% for error in form.select.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                    {{ form.search.label }}<br>
+                    {{ form.search(class="form-control") }}<br>
+                    {% for error in form.search.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                    {{ form.sorting.label }}<br>
+                    {{ form.sorting(class="form-control") }}<br>
+                    {% for error in form.sorting.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+            </form><br><br>
+        {% endif %}
+    <div align="center" class="articles">
+        <h2>Статьи:</h2><br>
+        {% for article in articles %}
+            <a href="/articles/{{ article.id }}"> <div>
+                <h3>Название: "{{ article.title }}" </h3>
+                <h5>Автор: <img src="static/img/users/{{ article.user.image|string }}" width="25px" height="25px">
+                    {{ article.user }}</h5>
+                <h5>Дата создания: {{ article.add_date }}</h5>
+                <h5>Дата изменения: {{ article.modified_date }}</h5>
+            </div> </a> <br><br>
+        {% endfor %}
+    </div>
+{% endblock %}
